@@ -1,12 +1,11 @@
 import React from 'react';
-// import Header from './Header';
+import Header from './Header';
 
 
 function App() {
   return (
     <div className='app_wrapper'>
-      {/* <Header/> */}
-      <h1>hello</h1>
+      {<Header/>}
     </div>
   );
 }
