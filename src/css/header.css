@@ -15,16 +15,17 @@
 }
 
 .header__left img{
-    height: 50px;
-    margin-right: 5px;
+    height: 70px;
+    margin-right: 15px;
+   
 }
 
 .header__search{
     display: flex;
     align-items: right;
     background-color: #f7f7f8;
-    padding: 1px 10px;
-    border-radius: 15px;
+    padding: 1px 15px;
+    border-radius: 20px;
 }
 
 .header__search input{
@@ -35,8 +36,9 @@
 }
 
 .header__search svg{
-    font-size: 40px;
-    color:#333;
+    font-size: 26px;
+    color:#494747;
+    margin-top: 5px;
 }
 
 .header__right{
