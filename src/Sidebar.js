@@ -9,7 +9,7 @@ function Sidebar() {
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtGuTboKmMCqLY3hlNJYtQzLUckTosF9xzcA&usqp=CAU" alt ="profile"/>
             <div className='profile__details'>
                 <Avatar/>
-                <h4>Skillop</h4>
+                <h4>Skill_Op</h4>
                 <p>Mentor</p>
             </div>
 
