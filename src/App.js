@@ -37,7 +37,7 @@ function App() {
     dispatch(getMyInfo())
 
 
-  }, [dispatch,curUser])
+  }, [dispatch, curUser])
 
 
   return (<>
@@ -45,8 +45,8 @@ function App() {
     <Header />
 
     <Routes>
-        <Route path='/' element={<Home />} >
-      <Route element={<RequireUser />}>
+      <Route path='/' element={<Home />} >
+        <Route element={<RequireUser />}>
           {/* <Route path="/profile/:userId" element={<Profile />}  ></Route>
           <Route path="/profile/update" element={<Updateprofile />}  ></Route> */}
 

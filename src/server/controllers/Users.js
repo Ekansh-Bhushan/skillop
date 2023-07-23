@@ -26,16 +26,27 @@ async function createUser({ user }) {
 }
 
 
-async function getUser() {
+async function createPost({postData}) {
+    try {
+        
+        const userRef = doc(db, "posts", postData.desc);
+        const owner = getItem(EMAIL_KEY)
+        
+        await setDoc(userRef, {
+            title:postData.title,
+            desc:postData.desc,
+            owner,
+        });
+        
+    } catch (e) {
+        
+    }
    
-
-
-
 }
 
 
 
 export {
     createUser,
-    getUser
+    createPost
 }
