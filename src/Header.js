@@ -7,31 +7,37 @@ import HomeIcon from '@mui/icons-material/Home';
 import MessageIcon from '@mui/icons-material/Message';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { Avatar } from '@mui/material';
-function Header()
-{
+import { useSelector } from 'react-redux';
+
+
+function Header() {
+  const myProfile = useSelector(s => s.userReducer.myProfile)
+
+  
+ 
   return (
     <div className='header'>
-        <div className='header__left'>
+      <div className='header__left'>
 
-            <div className='header__logo'>
-                <img src={img1} alt ="skillop"/>
-            </div>
-
-            <div className='header__search'>
-              <SearchIcon/>
-              <input type='text' placeholder='Search'/>
-            </div>
-
-            
+        <div className='header__logo'>
+          <img src={img1} alt="skillop" />
         </div>
 
-        <div className='header__right'>
-            <Headeroptions Icon={HomeIcon} title="Home"/>
-            <Headeroptions Icon={MessageIcon} title="Messaging"/>
-            <Headeroptions Icon={NotificationsIcon} title="Notifications"/>
-            <Headeroptions avatar={ Avatar } title="Me"/> 
-            {/* avatar add karna hai abhi  */}
+        <div className='header__search'>
+          <SearchIcon />
+          <input type='text' placeholder='Search' />
         </div>
+
+
+      </div>
+
+      <div className='header__right'>
+        <Headeroptions Icon={HomeIcon} title="Home" />
+        <Headeroptions Icon={MessageIcon} title="Messaging" />
+        <Headeroptions Icon={NotificationsIcon} title="Notifications" />
+        <Headeroptions avatar={Avatar} title={myProfile?.name?.stringValue } />
+        {/* avatar add karna hai abhi  */}
+      </div>
     </div>
   )
 }
