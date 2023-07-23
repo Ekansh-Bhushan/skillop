@@ -2,6 +2,7 @@ import React from 'react'
 import Sidebar from '../Sidebar';
 import Feed from '../feed';
 import Widget from '../widget';
+
 function Home() {
     return (
         <div className='app_body'>
@@ -9,7 +10,6 @@ function Home() {
             <Sidebar />
             <Feed />
             <Widget />
-
         </div>
     )
 }

@@ -17,6 +17,7 @@ function Auth() {
             
             setCurUser(user)
             createUser({ user: curUser });
+            
         } catch (e) {
             
         }

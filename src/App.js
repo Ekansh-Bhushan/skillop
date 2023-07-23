@@ -9,6 +9,8 @@ import NotLoggedIn from './app/NotLoggedIn';
 import Auth from './app/Auth';
 import { createUser } from './server/controllers/Users';
 import { useAuth0 } from '@auth0/auth0-react';
+import Infocollector from './infocollector';
+
 
 
 
@@ -39,19 +41,21 @@ function App() {
 
   }, [dispatch, curUser])
 
-
+  
+    
+  
   return (<>
 
     <Header />
-
+    
     <Routes>
       <Route path='/' element={<Home />} >
         <Route element={<RequireUser />}>
           {/* <Route path="/profile/:userId" element={<Profile />}  ></Route>
           <Route path="/profile/update" element={<Updateprofile />}  ></Route> */}
-
+            
         </Route>
-
+          
 
       </Route>
 
@@ -61,7 +65,7 @@ function App() {
 
 
       </Route>
-
+      
       {/* <Route path="/auth" element={<Auth />} /> */}
     </Routes>
     <Auth />
