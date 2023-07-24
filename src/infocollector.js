@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import "./css/Login.css"
 import { db } from "./server/firebaseConfig";
-import { doc, updateDoc } from 'firebase/firestore/lite';
+import { doc, updateDoc } from 'firebase/firestore';
 import img1 from './img/skillop.png'
 import { useSelector } from 'react-redux';
 import { EMAIL_KEY, getItem } from './localStorageConfig';
@@ -71,12 +71,12 @@ function Infocollector() {
   }
 
   function setProfile() {
-    setExperience(myProfile.experience?.stringValue);
-    setEducation(myProfile.education?.stringValue);
-    setSkills(myProfile.skills?.stringValue);
-    setAbout(myProfile.about?.stringValue);
-    setFuture(myProfile.future?.stringValue);
-    setPast(myProfile.past?.stringValue);
+    setExperience(myProfile.experience);
+    setEducation(myProfile.education);
+    setSkills(myProfile.skills);
+    setAbout(myProfile.about);
+    setFuture(myProfile.future);
+    setPast(myProfile.past);
 
   }
 

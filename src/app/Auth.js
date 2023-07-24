@@ -2,9 +2,9 @@ import { useAuth0 } from '@auth0/auth0-react';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 // import { createUser } from '../server/controllers/Users';
-import { EMAIL_KEY, removeItem, setItem } from '../localStorageConfig';
+import { EMAIL_KEY, getItem, removeItem, setItem } from '../localStorageConfig';
 import { db } from "../server/firebaseConfig";
-import { FieldValue, Timestamp, collection, doc, getDocs, setDoc } from 'firebase/firestore/lite';
+import { FieldValue, Timestamp, collection, doc, getDocs, setDoc } from 'firebase/firestore';
 import { getMyInfo } from '../redux/slices/userConfigSlice';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,24 +14,24 @@ function Auth() {
 
     const myProfile = useSelector(s => s.userReducer.myProfile)
     const [curUser, setCurUser] = useState();
-    const { user, isAuthenticated, loginWithRedirect, loginWithPopup, logout } = useAuth0();
+    const { user, isAuthenticated, loginWithPopup, logout } = useAuth0();
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
 
     async function createUser({ user }) {
         try {
-            console.log("in createuser");
 
-
-            const userRef = doc(db, 'users', user?.email);
+            const userRef = doc(db, 'users', user.email);
             await setDoc(userRef, {
                 name: user.name,
                 email: user.email,
                 picture: user.picture,
                 sub: user?.sub,
-                // timestamp: FieldValue.serverTimestamp()
+                myposts:[],
+                // createdAt: FieldValue.serverTimestamp()
             });
+            
 
             // navigate(`/profile/${getItem(EMAIL_KEY)}/info`)
 
@@ -96,7 +96,7 @@ function Auth() {
                         >logout</button>
                         <p>
 
-                            {myProfile?.name?.stringValue}
+                            {myProfile?.name}
                         </p>
                     </div>
                     :

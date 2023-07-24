@@ -39,7 +39,7 @@ function Header() {
         <Headeroptions Icon={NotificationsIcon} title="Notifications" />
         <span onClick={(() => navigate(`/profile/${getItem(EMAIL_KEY)}/info`))}>
 
-          <Headeroptions avatar={(myProfile?.picture )? myProfile?.picture : Avatar} title={myProfile?.name?.stringValue}  />
+          <Headeroptions avatar={(myProfile?.picture )? myProfile?.picture : Avatar} title={myProfile?.name}  />
         </span>
         {/* avatar add karna hai abhi  */}
       </div>

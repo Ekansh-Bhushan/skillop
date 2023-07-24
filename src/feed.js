@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Avatar } from "@mui/material"
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import YouTubeIcon from '@mui/icons-material/YouTube';
@@ -6,46 +6,81 @@ import TodayIcon from '@mui/icons-material/Today';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import "./css/feed.css"
 import Post from './Post';
-import { FieldValue, doc, setDoc, updateDoc } from 'firebase/firestore/lite';
+
+import { FieldValue, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { EMAIL_KEY, getItem } from './localStorageConfig';
 import { db } from './server/firebaseConfig';
-import { useId } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMyFeed } from './redux/slices/userConfigSlice';
+import { v4 as uuid } from 'uuid'
+import { serverTimestamp } from 'firebase/firestore'
+import firebase from 'firebase/compat/app'
+import 'firebase/compat/auth'
+import 'firebase/compat/firestore'
 
 
 function Feed() {
+    const myFeed = useSelector(s => s.userReducer.myFeed)
+    const myProfile = useSelector(s => s.userReducer.myProfile)
+    const dispatch = useDispatch()
+    const inputFeed = useRef(null);
 
-    const [input, setInput] = useState("");
-    const postId = useId();
 
     const handlePostSubmit = async (e) => {
-        e.preventDeafault();
+        e.preventDefault();
         try {
+            const postId = uuid();
             const userId = getItem(EMAIL_KEY);
 
-            const postRef = doc(db, "posts", `${postId}`);
+            const postRef = doc(db, "posts", postId);
+
+            // db.collection("posts").add({
+            //     message: inputFeed.current.value,
+            //     owner: userId,
+            //     likes: [],
+            //     comments: [],
+            //     timestamp: serverTimestamp(),
+            // });
+
             await setDoc(postRef, {
-                message: input,
+                message: inputFeed.current.value,
                 owner: userId,
-                // timestamp: FieldValue.serverTimestamp()
-
+                likes: [],
+                name: myProfile.name,
+                profilepic: myProfile.picture,
+                comments: [],
+                id:postId,
+                createdAt:serverTimestamp()
 
             })
 
-            setInput("");
+            inputFeed.current.value = ""
 
-            const userRef = doc(db, "user", userId);
+            const userRef = doc(db, "users", userId);
+            const user = await getDoc(userRef)
+            const mypostsprev = user.data().myposts;
+
+
             await updateDoc(userRef, {
-                myposts: FieldValue.arrayUnion(`${postId}`)
+                myposts: [...mypostsprev, `${postId}`]
 
 
             })
+
+            dispatch(getMyFeed())
 
         } catch (e) {
+            console.log(e);
 
         }
 
 
     }
+    useEffect(() => {
+        dispatch(getMyFeed())
+
+    }, [dispatch])
+
 
 
 
@@ -57,9 +92,8 @@ function Feed() {
 
                 <div className='feed__form'>
                     <Avatar />
-                    <form onSubmit={handlePostSubmit}>
-                        <input type='text' placeholder='Start a post' />
-                        {/* <input type='text' placeholder='Start a post' value={input} onChange={e => setInput(e.target.value)} /> */}
+                    <form onSubmit={(e) => handlePostSubmit(e)}>
+                        <input type='text' placeholder='Start a post' ref={inputFeed} />
                         <input type='submit' />
                     </form>
                 </div>
@@ -85,8 +119,17 @@ function Feed() {
                     </div>
                 </div>
             </div>
+            {
 
-            <Post name='Krissmann ' description="THis is test" message=" We are looking forward " photoURl="https://pps.whatsapp.net/v/t61.24694-24/317667431_573334008043895_4036489706529949770_n.jpg?ccb=11-4&oh=01_AdR5IH8plXaHsbTOJ1QFbUV-Jtdlh7e9BB3AI16GUlACsw&oe=64C7937C" />
+                myFeed?.map((item, i) => {
+                    return (
+
+
+                        <Post key={i} id={item.id} name={item.name} description="adg" message={item.message} photoURl={item.profilepic} />
+                    )
+                })
+            }
+
 
         </div>
     )
