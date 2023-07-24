@@ -15,7 +15,7 @@ export const getMyInfo = createAsyncThunk('/user/getmyinfo', async (_, thunkAPI)
             doc.id === localEmail
         );
         const data= user[0]._document.data.value.mapValue.fields
-        // console.log(data);
+        console.log(data);
         return data;
 
 

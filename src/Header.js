@@ -9,18 +9,19 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { Avatar } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { EMAIL_KEY, getItem } from './localStorageConfig';
 
 
 function Header() {
   const myProfile = useSelector(s => s.userReducer.myProfile)
 
   const navigate = useNavigate();
- 
+
   return (
     <div className='header'>
       <div className='header__left'>
 
-        <div onClick={()=>navigate('/')} className='header__logo'>
+        <div onClick={() => navigate('/')} className='header__logo'>
           <img src={img1} alt="skillop" />
         </div>
 
@@ -36,7 +37,10 @@ function Header() {
         <Headeroptions Icon={HomeIcon} title="Home" />
         <Headeroptions Icon={MessageIcon} title="Messaging" />
         <Headeroptions Icon={NotificationsIcon} title="Notifications" />
-        <Headeroptions avatar={Avatar} title={myProfile?.name?.stringValue } />
+        <span onClick={(() => navigate(`/profile/${getItem(EMAIL_KEY)}/info`))}>
+
+          <Headeroptions avatar={(myProfile?.picture )? myProfile?.picture : Avatar} title={myProfile?.name?.stringValue}  />
+        </span>
         {/* avatar add karna hai abhi  */}
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Header from './Header';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getMyInfo } from './redux/slices/userConfigSlice';
 import { Link, Route, Routes } from "react-router-dom";
 import RequireUser from './app/RequireUser';
@@ -15,6 +15,8 @@ import { EMAIL_KEY, getItem } from './localStorageConfig';
 
 
 function App() {
+  
+  const myProfile = useSelector(s => s.userReducer.myProfile)
 
   const dispatch = useDispatch();
 
@@ -36,6 +38,9 @@ function App() {
 
 
   }, [dispatch])
+  useEffect(() => {
+
+  }, [myProfile])
 
 
 
@@ -63,7 +68,7 @@ function App() {
       {/* <Route path="/auth" element={<Auth />} /> */}
     </Routes>
     <Auth />
-    <Link to={`/profile/${getItem(EMAIL_KEY)}/info`}>Info</Link>
+    {/* <Link to={`/profile/${getItem(EMAIL_KEY)}/info`}>Info</Link> */}
 
 
 

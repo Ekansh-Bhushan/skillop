@@ -1,33 +1,36 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import React from 'react'
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 // import { createUser } from '../server/controllers/Users';
 import { EMAIL_KEY, getItem, removeItem, setItem } from '../localStorageConfig';
 import { db } from "../server/firebaseConfig";
 import { doc, setDoc } from 'firebase/firestore/lite';
+import { getMyInfo } from '../redux/slices/userConfigSlice';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 
 
 function Auth() {
 
     const myProfile = useSelector(s => s.userReducer.myProfile)
- 
-    const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
-   
+    const [curUser, setCurUser] = useState();
+    const { user, isAuthenticated, loginWithRedirect, loginWithPopup, logout } = useAuth0();
+    const dispatch = useDispatch()
+    const navigate = useNavigate();
 
-    async function createUser() {
+
+    async function createUser({ user }) {
         try {
 
 
-            setItem(EMAIL_KEY, user.email)
             const userRef = doc(db, "users", user.email);
-            console.log(getItem(EMAIL_KEY));
             await setDoc(userRef, {
                 name: user.name,
                 email: user.email,
                 picture: user.picture,
                 sub: user.sub
             });
+
             // navigate(`/profile/${getItem(EMAIL_KEY)}/info`)
 
         } catch (e) {
@@ -36,17 +39,19 @@ function Auth() {
         }
 
     }
-    
-    function authorize() {
+
+    async function authorize() {
         try {
-            loginWithRedirect();
-    
-    
-            createUser({ user });
-            console.log(user);
-            
+            await loginWithPopup()
+            navigate('/')
+
+
+            createUser({ user: curUser });
+
+
+
         } catch (e) {
-            
+
         }
 
     }
@@ -55,16 +60,21 @@ function Auth() {
 
 
 
-    // useEffect(() => {
-    //     try {
+    useEffect(() => {
 
-    //         setCurUser(user)
-    //         createUser({ user: curUser });
+        dispatch(getMyInfo())
 
-    //     } catch (e) {
+    }, [user, myProfile, isAuthenticated])
 
-    //     }
-    // }, [user, curUser,isAuthenticated])
+    useEffect(() => {
+        if (user?.email) {
+
+            setItem(EMAIL_KEY, user?.email)
+
+            dispatch(getMyInfo())
+            createUser({ user: curUser });
+        }
+    }, [isAuthenticated])
 
     return (
         <div>
