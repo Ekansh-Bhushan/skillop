@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Header from './Header';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMyInfo } from './redux/slices/userConfigSlice';
-import { Link, Route, Routes } from "react-router-dom";
+import {  Link, Route, Routes } from "react-router-dom";
 import RequireUser from './app/RequireUser';
 import Home from './app/Home';
 import NotLoggedIn from './app/NotLoggedIn';
@@ -21,26 +21,13 @@ function App() {
   const dispatch = useDispatch();
 
 
-  // useEffect(() => {
-  //   try {
-
-  //     setCurUser(user)
-  //     createUser({ user: curUser });
-  //   } catch (e) {
-
-  //   }
-
-
-  // }, [user, curUser])
-
+  
   useEffect(() => {
     dispatch(getMyInfo())
 
 
   }, [dispatch])
-  useEffect(() => {
-
-  }, [myProfile])
+  
 
 
 
@@ -65,10 +52,9 @@ function App() {
 
       </Route>
 
-      {/* <Route path="/auth" element={<Auth />} /> */}
     </Routes>
     <Auth />
-    {/* <Link to={`/profile/${getItem(EMAIL_KEY)}/info`}>Info</Link> */}
+    <Link to={`/profile/${getItem(EMAIL_KEY)}/info`}>Info</Link>
 
 
 

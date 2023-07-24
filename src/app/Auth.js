@@ -2,11 +2,11 @@ import { useAuth0 } from '@auth0/auth0-react';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 // import { createUser } from '../server/controllers/Users';
-import { EMAIL_KEY, getItem, removeItem, setItem } from '../localStorageConfig';
+import { EMAIL_KEY,removeItem, setItem } from '../localStorageConfig';
 import { db } from "../server/firebaseConfig";
 import { doc, setDoc } from 'firebase/firestore/lite';
 import { getMyInfo } from '../redux/slices/userConfigSlice';
-import { Navigate, useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 
 
 
@@ -60,11 +60,6 @@ function Auth() {
 
 
 
-    // useEffect(() => {
-
-    //     dispatch(getMyInfo())
-
-    // }, [user, myProfile, isAuthenticated])
 
     useEffect(() => {
         if (user?.email) {
