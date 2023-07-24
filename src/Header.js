@@ -8,18 +8,19 @@ import MessageIcon from '@mui/icons-material/Message';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { Avatar } from '@mui/material';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 
 function Header() {
   const myProfile = useSelector(s => s.userReducer.myProfile)
 
-  
+  const navigate = useNavigate();
  
   return (
     <div className='header'>
       <div className='header__left'>
 
-        <div className='header__logo'>
+        <div onClick={()=>navigate('/')} className='header__logo'>
           <img src={img1} alt="skillop" />
         </div>
 

@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Header from './Header';
 import { useDispatch } from 'react-redux';
 import { getMyInfo } from './redux/slices/userConfigSlice';
-import { Route, Routes } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import RequireUser from './app/RequireUser';
 import Home from './app/Home';
 import NotLoggedIn from './app/NotLoggedIn';
 import Auth from './app/Auth';
-import { createUser } from './server/controllers/Users';
-import { useAuth0 } from '@auth0/auth0-react';
+import Infocollector from './infocollector';
+import { EMAIL_KEY, getItem } from './localStorageConfig';
+
 
 
 
@@ -16,28 +17,27 @@ import { useAuth0 } from '@auth0/auth0-react';
 function App() {
 
   const dispatch = useDispatch();
-  const [curUser, setCurUser] = useState();
-
-  const { user } = useAuth0();
 
 
-  useEffect(() => {
-    try {
+  // useEffect(() => {
+  //   try {
 
-      setCurUser(user)
-      createUser({ user: curUser });
-    } catch (e) {
+  //     setCurUser(user)
+  //     createUser({ user: curUser });
+  //   } catch (e) {
 
-    }
+  //   }
 
 
-  }, [user, curUser])
+  // }, [user, curUser])
 
   useEffect(() => {
     dispatch(getMyInfo())
 
 
-  }, [dispatch, curUser])
+  }, [dispatch])
+
+
 
 
   return (<>
@@ -45,17 +45,15 @@ function App() {
     <Header />
 
     <Routes>
-      <Route path='/' element={<Home />} >
-        <Route element={<RequireUser />}>
-          {/* <Route path="/profile/:userId" element={<Profile />}  ></Route>
-          <Route path="/profile/update" element={<Updateprofile />}  ></Route> */}
 
-        </Route>
+      <Route element={<RequireUser />}>
+        <Route path='/' element={<Home />} ></Route>
+        {/* <Route path="/profile/:userId" element={<Profile />}  ></Route>
+          <Route path="/profile/update" element={<Updateprofile />}  ></Route> */}
+        <Route path="/profile/:userId/info" element={<Infocollector />}  ></Route>
 
 
       </Route>
-
-
       <Route element={<NotLoggedIn />}>
         <Route path="/auth" element={<Auth />} />
 
@@ -65,6 +63,7 @@ function App() {
       {/* <Route path="/auth" element={<Auth />} /> */}
     </Routes>
     <Auth />
+    <Link to={`/profile/${getItem(EMAIL_KEY)}/info`}>Info</Link>
 
 
 
