@@ -60,11 +60,11 @@ function Auth() {
 
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        dispatch(getMyInfo())
+    //     dispatch(getMyInfo())
 
-    }, [user, myProfile, isAuthenticated])
+    // }, [user, myProfile, isAuthenticated])
 
     useEffect(() => {
         if (user?.email) {
