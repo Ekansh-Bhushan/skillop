@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Avatar } from "@mui/material"
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import YouTubeIcon from '@mui/icons-material/YouTube';
@@ -6,35 +6,59 @@ import TodayIcon from '@mui/icons-material/Today';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import "./css/feed.css"
 import Post from './Post';
-// import { db } from './firebase'
-// import firebase from "firebase"
+import { FieldValue, doc, setDoc, updateDoc } from 'firebase/firestore/lite';
+import { EMAIL_KEY, getItem } from './localStorageConfig';
+import { db } from './server/firebaseConfig';
+import { useId } from 'react';
 
 
-function feed() {
+function Feed() {
 
-    // const [input, setInput] = useState();
-    // const submitPost = (e) => {
-    //         e.preventDeafault();
-    //         // alert(input)
-    //         db.collection("posts").add({
-    //             name:"skillopop",
-    //             description:"this is test",
-    //             message:input,
-    //             photoURl:'https://pps.whatsapp.net/v/t61.24694-24/317667431_573334008043895_4036489706529949770_n.jpg?ccb=11-4&oh=01_AdR5IH8plXaHsbTOJ1QFbUV-Jtdlh7e9BB3AI16GUlACsw&oe=64C7937C',
-    //             timestamp:firebase.firestore.FieldValue.serverTimestamp(),
-    //         });
-    //         setInput("");
+    const [input, setInput] = useState("");
+    const postId = useId();
 
-    // }
+    const handlePostSubmit = async (e) => {
+        e.preventDeafault();
+        try {
+            const userId = getItem(EMAIL_KEY);
+
+            const postRef = doc(db, "posts", `${postId}`);
+            await setDoc(postRef, {
+                message: input,
+                owner: userId,
+                // timestamp: FieldValue.serverTimestamp()
+
+
+            })
+
+            setInput("");
+
+            const userRef = doc(db, "user", userId);
+            await updateDoc(userRef, {
+                myposts: FieldValue.arrayUnion(`${postId}`)
+
+
+            })
+
+        } catch (e) {
+
+        }
+
+
+    }
+
+
+
+
+
     return (
         <div className='feed'>
             <div className='feed__input'>
 
                 <div className='feed__form'>
                     <Avatar />
-                    {/* <form onSubmit={submitPost}> */}
-                    <form>
-                        <input type='text' placeholder='Start a post'/>
+                    <form onSubmit={handlePostSubmit}>
+                        <input type='text' placeholder='Start a post' />
                         {/* <input type='text' placeholder='Start a post' value={input} onChange={e => setInput(e.target.value)} /> */}
                         <input type='submit' />
                     </form>
@@ -68,4 +92,4 @@ function feed() {
     )
 }
 
-export default feed
+export default Feed

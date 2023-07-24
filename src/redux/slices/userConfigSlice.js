@@ -10,7 +10,7 @@ export const getMyInfo = createAsyncThunk('/user/getmyinfo', async (_, thunkAPI)
         const localEmail = getItem(EMAIL_KEY)
         console.log("hi");
 
-        const userCol = collection(db, 'users');
+        const userCol = collection(db, "users");
         const snap = await getDocs(userCol);
         const user = snap.docs.filter(doc =>
             doc.id === localEmail
